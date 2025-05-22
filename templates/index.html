@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Dự đoán Giá Xe Cũ</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-slate-900 text-white flex items-center justify-center min-h-screen">
+<div class="w-full max-w-5xl bg-slate-800 p-6 rounded-2xl shadow-2xl">
+    <h1 class="text-3xl font-extrabold mb-6 text-center">🚗💸 Dự đoán Giá Xe Cũ</h1>
+    <form id="carForm" class="grid grid-cols-1 md:grid-cols-2 gap-4"></form>
+
+    <button id="submitBtn"
+            class="mt-6 w-full bg-indigo-600 hover:bg-indigo-700 py-3 rounded-xl font-semibold">
+        Dự đoán ngay
+    </button>
+    <p id="result" class="text-center text-2xl font-bold mt-6"></p>
+</div>
+<script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+</html>
