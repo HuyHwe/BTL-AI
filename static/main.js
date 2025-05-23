@@ -65,6 +65,6 @@ document.getElementById('submitBtn').addEventListener('click', async e => {
     });
     const json = await res.json();
     resultEl.textContent = json.ok
-        ? `≈ ${json.price.toLocaleString('vi-VN')} ₫`
+        ? `Xe của bạn được định giá ≈ ${json.price.toLocaleString('vi-VN')} triệu ₫`
         : `❌ Lỗi: ${json.error}`;
 });

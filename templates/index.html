@@ -1,21 +1,40 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <title>Dự đoán Giá Xe Cũ</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3/dist/tailwind.min.css" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <title>Dự đoán Giá Xe Cũ</title>
+    <!-- Tailwind v3 CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
-<body class="bg-slate-900 text-white flex items-center justify-center min-h-screen">
-<div class="w-full max-w-5xl bg-slate-800 p-6 rounded-2xl shadow-2xl">
-    <h1 class="text-3xl font-extrabold mb-6 text-center">🚗💸 Dự đoán Giá Xe Cũ</h1>
-    <form id="carForm" class="grid grid-cols-1 md:grid-cols-2 gap-4"></form>
+<body class="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 text-white flex items-center justify-center p-4">
+<div class="w-full max-w-5xl">
+    <!-- Card Wrapper -->
+    <div class="bg-slate-800/80 rounded-2xl shadow-2xl backdrop-blur border border-slate-700">
+        <!-- Header -->
+        <header class="px-8 pt-8 pb-4 border-b border-slate-700 text-center">
+            <h1 class="text-4xl font-black tracking-wide mb-2 flex justify-center items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 13l2-2-2-2m0 0l2-2-2-2m3 6h9m-9-6h9m4 0h2m-2 6h2m-8-6h2m-2 6h2" />
+                </svg>
+                Dự&nbsp;đoán&nbsp;Giá&nbsp;Xe&nbsp;Cũ
+            </h1>
+        </header>
 
-    <button id="submitBtn"
-            class="mt-6 w-full bg-indigo-600 hover:bg-indigo-700 py-3 rounded-xl font-semibold">
-        Dự đoán ngay
-    </button>
-    <p id="result" class="text-center text-2xl font-bold mt-6"></p>
+        <!-- Form -->
+        <form id="carForm" class="px-8 py-8 grid grid-cols-1 md:grid-cols-2 gap-6"></form>
+
+        <!-- Footer -->
+        <footer class="px-8 pb-8 flex flex-col gap-4">
+            <button id="submitBtn" type="button" class="w-full bg-indigo-600 hover:bg-indigo-700 active:scale-95 transition py-3 rounded-xl font-semibold tracking-wide text-lg shadow-lg shadow-indigo-600/30">
+                🔮 Dự&nbsp;đoán&nbsp;ngay
+            </button>
+            <p id="result" class="text-center text-3xl font-extrabold text-indigo-400 min-h-[2rem]"></p>
+        </footer>
+    </div>
 </div>
-<script src="{{ url_for('static', filename='main.js') }}"></script>
+
+<!-- Main JS -->
+<script src="/static/main.js"></script>
 </body>
 </html>
