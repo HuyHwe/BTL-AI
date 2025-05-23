@@ -10,12 +10,8 @@ from linearRegression import LinearRegression
 def tai_du_lieu(duong_dan: str):
     df = pd.read_csv(duong_dan)
 
-    # Loại bỏ các cột không cần thiết
-    # Thêm 'ad_id' nếu có trong file dummies.csv và không phải là feature
-    # Nếu 'dummies.csv' được tạo từ dataExplore.ipynb, nó sẽ không có 'ad_id' nữa.
-    # errors='ignore' sẽ bỏ qua nếu cột không tồn tại.
     columns_to_drop = ['Price', 'log_price']
-    if 'ad_id' in df.columns:  # Kiểm tra xem cột ad_id có tồn tại không
+    if 'ad_id' in df.columns:  
         columns_to_drop.append('ad_id')
 
     X = df.drop(columns=columns_to_drop, errors='ignore')
@@ -43,7 +39,7 @@ def chia_train_test(X, y, ti_le_test=0.2, seed=42):
     idx = rng.permutation(len(X))
     test_len = int(len(X) * ti_le_test)
     test_idx, train_idx = idx[:test_len], idx[test_len:]
-    # Đảm bảo X và y được индексируются bằng iloc nếu là DataFrame/Series
+    # illoc để không lỗi nếu X là DataFrame
     X_train = X.iloc[train_idx] if isinstance(X, pd.DataFrame) else X[train_idx]
     X_test = X.iloc[test_idx] if isinstance(X, pd.DataFrame) else X[test_idx]
     y_train = y[train_idx]
@@ -54,7 +50,6 @@ def chia_train_test(X, y, ti_le_test=0.2, seed=42):
 def main():
 
     file_csv = os.path.join(os.path.dirname(__file__), 'dataset.csv')
-
     print('Đang tải và xử lý dữ liệu...')
     X, y_log, y_original_price, ten_cot = tai_du_lieu(file_csv)
     print(f'Dữ liệu sau xử lý: {X.shape[0]} dòng, {X.shape[1]} biến.')
@@ -63,14 +58,14 @@ def main():
     X_train, X_test, y_train_log, y_test_log = chia_train_test(X, y_log)
 
     print('Huấn luyện mô hình Gradient Descent (trên log_price)...')
-    model = LinearRegression(learning_rate=0.2, n_iterations=4000)
-    model.fit(X_train.values, y_train_log)  # Sử dụng .values để truyền numpy array vào LinearRegression
+    model = LinearRegression(learning_rate=0.3, n_iterations=4000)
+    model.fit(X_train.values, y_train_log)  
 
-    # Lưu weights và bias nếu cần
+    # Lưu weights và bias 
     model.weights.tofile('weights.dat')
-    np.array([model.bias]).tofile('bias.dat') # Bias là một scalar, cần chuyển thành array để lưu
+    np.array([model.bias]).tofile('bias.dat')
 
-    y_pred_log = model.predict(X_test.values)  # Sử dụng .values
+    y_pred_log = model.predict(X_test.values)  
 
     # Đánh giá trên thang log
     mse_log = np.mean((y_test_log - y_pred_log) ** 2)
@@ -89,7 +84,7 @@ def main():
         print('- 10 hệ số quan trọng nhất:')
         sorted_indices = np.argsort(np.abs(model.weights))[::-1]
         for i, idx in enumerate(sorted_indices[:10]):
-            if i < len(ten_cot):  # Đảm bảo idx nằm trong phạm vi của ten_cot
+            if i < len(ten_cot):  
                 print(f'  {ten_cot[idx]:<45} {model.weights[idx]:>10.4f}')
             else:
                 print(f'  Index {idx} out of bounds for feature names.')
