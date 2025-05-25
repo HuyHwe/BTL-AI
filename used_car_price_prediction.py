@@ -22,13 +22,10 @@ def tai_du_lieu(duong_dan: str):
     X_numeric = X.select_dtypes(include=np.number)
     X_scaled_values = scaler.fit_transform(X_numeric)
 
-    # Tạo lại DataFrame X_scaled với các cột đã chuẩn hóa và giữ lại các cột không phải số nếu có
     X_scaled_df = pd.DataFrame(X_scaled_values, columns=X_numeric.columns, index=X.index)
 
-
-    # Lấy log_price làm y
     y_log = df['log_price'].values
-    y = df['Price'].values  # Price gốc để so sánh cuối cùng
+    y = df['Price'].values  # Price gốc
 
     # Trả về DataFrame X chuẩn hóa và tên cột
     return X_scaled_df, y_log, y, X_numeric.columns.tolist()
@@ -71,7 +68,7 @@ def main():
     mse_log = np.mean((y_test_log - y_pred_log) ** 2)
     r2_log = 1 - np.sum((y_test_log - y_pred_log) ** 2) / np.sum((y_test_log - np.mean(y_test_log)) ** 2)
 
-    # Quy đổi về giá trị gốc để đánh giá và trực quan hóa
+    # Quy đổi về giá trị gốc để đánh giá 
     y_test_price = np.exp(y_test_log)
     y_pred_price = np.exp(y_pred_log)
 
@@ -99,37 +96,35 @@ def main():
     print(f'  • MSE (price)    : {mse_price:,.0f}')
     print(f'  • R²  (price)    : {r2_price:.4f}')
 
-    # --- Tối ưu biểu đồ Thực tế vs Dự đoán (Giá) ---
-    plt.figure(figsize=(8, 8))  # Tăng kích thước để dễ nhìn hơn
-    plt.scatter(y_test_price, y_pred_price, alpha=0.5, s=35, edgecolors='k',
-                linewidths=0.5)  # s: kích thước điểm, thêm viền
 
-    # Xác định giới hạn cho đường tham chiếu để bao phủ toàn bộ dữ liệu
+    plt.figure(figsize=(8, 8))  
+    plt.scatter(y_test_price, y_pred_price, alpha=0.5, s=35, edgecolors='k',
+                linewidths=0.5)  
+
+  
     min_val = min(y_test_price.min(), y_pred_price.min())
     max_val = max(y_test_price.max(), y_pred_price.max())
-    plt.plot([min_val, max_val], [min_val, max_val], 'r--', linewidth=2)  # Đường màu đỏ, nét đứt, đậm hơn
+    plt.plot([min_val, max_val], [min_val, max_val], 'r--', linewidth=2)
 
     plt.xlabel('Giá thực tế', fontsize=12)
     plt.ylabel('Giá dự đoán', fontsize=12)
     plt.title('Thực tế vs Dự đoán (Giá)', fontsize=14)
-    plt.grid(True, linestyle=':', alpha=0.7)  # Thêm lưới dạng chấm, mờ
+    plt.grid(True, linestyle=':', alpha=0.7) 
 
-    # Đảm bảo trục bắt đầu từ 0 nếu tất cả giá trị là dương
     current_xlim = plt.xlim()
     current_ylim = plt.ylim()
     plt.xlim(left=max(0, current_xlim[0]))
     plt.ylim(bottom=max(0, current_ylim[0]))
 
-    # Thêm thông số R² và MSE vào biểu đồ
     plt.text(0.05, 0.95, f'R²: {r2_price:.4f}\nMSE: {mse_price:,.0f}',
              transform=plt.gca().transAxes, fontsize=10,
              verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
 
-    plt.tight_layout()  # Tự động điều chỉnh bố cục
+    plt.tight_layout()  
     plt.show()
 
     # --- Biểu đồ hội tụ Gradient Descent ---
-    plt.figure(figsize=(8, 5))  # Điều chỉnh kích thước
+    plt.figure(figsize=(8, 5))  
     plt.plot(model.cost_history)
     plt.xlabel('Vòng lặp (Iterations)', fontsize=12)
     plt.ylabel('MSE (trên log_price)', fontsize=12)
